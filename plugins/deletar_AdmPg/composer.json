@@ -1,0 +1,24 @@
+{
+    "name": "your-name-here/Adm",
+    "description": "Adm plugin for CakePHP",
+    "type": "cakephp-plugin",
+    "require": {
+        "php": ">=5.4",
+        "cakephp/cakephp": "3.0.x-dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "holt59/cakephp3-bootstrap3-helpers": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Adm\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Adm\\Test\\": "tests",
+            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+        }
+    }
+}

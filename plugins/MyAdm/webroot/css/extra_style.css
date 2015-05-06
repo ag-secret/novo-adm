@@ -1,0 +1,19 @@
+@media (max-width: 767px) {
+	
+}
+@media (min-width: 768px) and (max-width: 991px) {
+
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+	.main-search{
+		width: 350px!important;
+	}
+}
+@media (min-width: 1200px) {
+	.main-search{
+		width: 350px!important;
+	}
+}
+.my-default-alert{
+	z-index: 9999!important; position: fixed;!important; top: 0; width: 100%;
+}
