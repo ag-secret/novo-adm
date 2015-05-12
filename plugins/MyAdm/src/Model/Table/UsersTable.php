@@ -9,11 +9,23 @@ use Cake\Validation\Validator;
 
 use Cake\Auth\DefaultPasswordHasher;
 
+use WideImage\WideImage;
+
+use Cake\Filesystem\File;
+use Cake\Filesystem\Folder;
+
+use Cake\Utility\Security;
+
+use Cake\I18n\Time;
+
 /**
  * Users Model
  */
 class UsersTable extends Table
 {
+
+    protected $imagemPerfilExtAllowed = ['image/jpeg', 'image/png'];
+    protected $imagemPerfilMaxSize = 2000; // In kb
 
     /**
      * Initialize method
@@ -34,11 +46,59 @@ class UsersTable extends Table
 
     public function beforeSave($event, $entity)
     {
+        $defaultExtension = 'jpg';
+
+        if ($entity->imagem_perfil_file['error'] === 0) {
+            $entity->imagem_perfil = Security::hash($entity->imagem_perfil_file['name']) . '.' . $defaultExtension;
+        }
+
         if ($entity->permissions) {
             $this->Permissions->deleteAll(['user_id' => $entity->id]);
         }
-        
     }
+
+    public function afterSave($event, $entity)
+    {
+        switch ($entity->imagem_perfil_file['error']) {
+            case UPLOAD_ERR_OK:
+                $this->_uploadImage($entity);
+                break;
+            // Se não possuir arquivo tudo bem, nao tratar como erro
+            case UPLOAD_ERR_NO_FILE:
+                break;
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                throw new RuntimeException('Exceeded filesize limit.');
+            default:
+                throw new RuntimeException('Unknown errors.');
+        }
+    }
+
+    protected function _uploadImage($entity)
+    {
+        $defaultExtension = 'jpg';
+        $destFolderPath = Folder::addPathElement(
+            WWW_ROOT,
+            [
+                'img',
+                'users',
+                $entity->id
+            ]
+        );
+
+        $destFolder = new Folder();
+
+        if ($destFolder->create($destFolderPath, true, 0755)) {
+
+            $file = new File($entity->imagem_perfil_file['tmp_name']);
+
+            WideImage::load($file->path)
+                ->resize(140, 140, 'outside')
+                ->crop('top', 'center', 140, 140)
+                ->saveToFile(Folder::addPathElement($destFolderPath, $entity->imagem_perfil));
+        };
+    }
+
 
     /**
      * Default validation rules.
@@ -97,7 +157,27 @@ class UsersTable extends Table
             ])
 
             ->add('is_active', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('is_active');
+            ->allowEmpty('is_active')
+
+            ->add('imagem_perfil_file', 'file', [
+                'rule' => ['mimeType', $this->imagemPerfilExtAllowed],
+                // 'on' => function ($context) {
+                //     return !empty($context['data']['show_profile_picture']);
+                // }
+            ])
+            ->add('imagem_perfil_file', 'fileSize', [
+                'rule' => function($value, $context){
+                    if ($context['data']['imagem_perfil_file']['error'] === 0) {
+                        $size = $context['data']['imagem_perfil_file']['size'] / 1024; // Transformando em KB
+                        if ($size > $this->imagemPerfilMaxSize) {
+                            return false;
+                        }
+
+                        return true;
+                    }
+                },
+                'message' => 'A imagem deve conter no máximo ' . $this->imagemPerfilMaxSize . ' KB.'
+            ]);
 
         return $validator;
     }

@@ -23,7 +23,28 @@ class User extends Entity
         'new_password' => true,
         'permissions' => true,
         'is_active' => true,
+        'imagem_perfil' => true,
+        'imagem_perfil_fullpath' => true,
+        'imagem_perfil_trabalhada' => true,
+        'imagem_perfil_file' => true
     ];
+
+    protected function _getImagemPerfilFullpath()
+    {
+        $out = null;
+        if ($this->_properties['imagem_perfil']) {
+           $out = 'users/' . $this->_properties['id'] . '/' . $this->_properties['imagem_perfil'];
+        }
+        return $out;
+    }
+    protected function _getImagemPerfilTrabalhada()
+    {
+        if ($this->_getImagemPerfilFullpath()) {
+            return $this->_getImagemPerfilFullpath();
+        }
+
+        return 'MyAdm.no-avatar.png';
+    }
 
     protected function _setPassword($password)
     {

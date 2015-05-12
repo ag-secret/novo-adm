@@ -37,13 +37,14 @@ class AppController extends Controller
             'className' => 'Bootstrap3.BootstrapHtml'
         ],
         'Form' => [
-            'className' => 'Bootstrap3.BootstrapForm'
+            'className' => 'Bootstrap3.BootstrapForm',
+            'useCustomFileInput' => true
         ],
         'Modal' => [
             'className' => 'Bootstrap3.BootstrapModal'
         ]
     ];
-
+    
     public $sidemenuItems = [
         'Principal' => [
             [
@@ -113,6 +114,8 @@ class AppController extends Controller
 
         $this->Auth->allow(['add']);
 
+        // Debug($this->Auth->user());
+        // exit();
         if ($this->Auth->user()) {
             $this->set('loggedInUser', $this->Auth->user());
         }
@@ -125,7 +128,6 @@ class AppController extends Controller
             'sidemenuItemsClean' => $this->sidemenuItemsClean,
             'hasQuickAddMenu' => $this->_hasQuickAddMenu()
         ]);
-
     }
 
     public function _hasQuickAddMenu()

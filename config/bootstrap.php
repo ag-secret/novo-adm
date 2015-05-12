@@ -181,7 +181,6 @@ Request::addDetector('tablet', function ($request) {
 
 Plugin::load('Migrations');
 Plugin::load('MyAdm');
-Plugin::load('InteragirAdmGenerator', ['bootstrap' => false, 'routes' => true]);
 //Plugin::loadAll();
 
 // Only try to load DebugKit in development mode

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1ad4161cdde21c6ad94b9365c6b471cc",
+    "hash": "b1d0feb426133c80cbb987b3e47c1b02",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -530,6 +530,35 @@
                 "phinx"
             ],
             "time": "2015-02-23 16:38:12"
+        },
+        {
+            "name": "smottt/wideimage",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smottt/WideImage.git",
+                "reference": "ee2e71be7e3f298248bd6d0f4a157bb42f432ba7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smottt/WideImage/zipball/ee2e71be7e3f298248bd6d0f4a157bb42f432ba7",
+                "reference": "ee2e71be7e3f298248bd6d0f4a157bb42f432ba7",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "WideImage": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0",
+                "LGPL-2.1"
+            ],
+            "description": "An open-source PHP library for image manipulation. (With namespaces, PHP 5.3+)",
+            "homepage": "http://wideimage.sourceforge.net",
+            "time": "2014-10-05 14:59:53"
         },
         {
             "name": "symfony/config",
@@ -1124,6 +1153,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "smottt/wideimage": 20,
         "psy/psysh": 0,
         "holt59/cakephp3-bootstrap3-helpers": 20
     },
